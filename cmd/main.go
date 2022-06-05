@@ -26,6 +26,6 @@ func main() {
 }
 
 func initConfig() error {
-	viper.SetConfigFile("сonfig/.env")
+	viper.SetConfigFile("C:/test/сonfig/.env")
 	return viper.ReadInConfig()
 }

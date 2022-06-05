@@ -21,13 +21,6 @@ func NewDocsGeneratorService() *DocsGeneratorService {
 }
 
 func (s *DocsGeneratorService) Generate(input model.Input) (model.Output, error) {
-	// get string of xml doc from response
-	// create array of all entries <:text..></text> tags
-	// send array to func that returns array of the same strings with replaced '_' on data from API
-	// replace in parent string all elements from initial array on modified ones from returned array
-	// save string as .doc with generated name
-	// return path
-
 	// getting xml file as string
 	doc := doSimpleGetRequest(input.URLTemplate)
 
@@ -43,13 +36,11 @@ func (s *DocsGeneratorService) Generate(input model.Input) (model.Output, error)
 	// getting modified array where <w:t>_</w:t> replaced with <w:t>some new text from API etc.</w:t>
 	modifiedTags := modifyTags(tagEntries, input.RecordId)
 
-	//fmt.Printf("%v\n\n%v", tagEntries, modifiedTags)
-
+	// modifying doc
 	modifiedDoc := modifyDoc(doc, tagEntries, modifiedTags)
 
+	// saving doc
 	filePath := saveAsMSDoc(modifiedDoc)
-
-	//fileName := parseAndChange(doc, input)
 
 	return model.Output{URLWord: filePath}, nil
 }
@@ -104,7 +95,6 @@ func getTagsArray(str string, rex *regexp.Regexp) []string {
 	return rex.FindAllString(str, -1)
 }
 
-////////////////////////////////////////////////////////
 func doSimpleGetRequest(url string) string {
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", url, nil)
